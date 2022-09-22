@@ -1,0 +1,71 @@
+def number(znach):
+    if znach[0] == '-' and znach[1:].isdigit:
+        return 1
+    elif znach.isdigit():
+        return 1
+    for i in range(len(znach)):
+        if znach[i].isalpha():
+            return 0
+
+def evkl(a, b):
+    while a != b:
+        if a > b:
+            a -= b
+        else:
+            b -= a
+    return a
+
+print('''Введите коэффициенты квадратного уравнения ax^2 + bx + c = 0.
+Если ваше квадратное уравнение неполное, то присвойте значение c = 0''')
+print('Коэффициент а: ', end = '')
+a = input()
+while number(a) == 0 or a == '0':
+    if number(a) == 0:
+        print('Попробуйте еще раз. Коэффициент а: ', end = '')
+        a = input()
+    elif a == '0':
+        print('Ваше уравнение не квадратное. Попробуйте еще раз. Коэффициент а: ', end='')
+        a = input()
+print('Коэффициент b: ', end = '')
+b = input()
+while number(b) == 0:
+    if number(b) == 0:
+        print('Попробуйте еще раз. Коэффициент b: ', end = '')
+        b = input()
+print('Коэффициент c: ', end = '')
+c = input()
+while number(c) == 0:
+    if number(c) == 0:
+        print('Попробуйте еще раз. Коэффициент c: ', end = '')
+        c = input()
+if c != '0':
+    print('Ваше уравнение:', '('+str(a)+')'+'x^2'+'+'+'('+str(b)+')'+'x'+'+'+'('+str(c)+')'+' = 0')
+else:
+    print('Ваше уравнение:', '(' + str(a) + ')' + 'x^2' + '+' + '(' + str(b) + ')' + 'x' + ' = 0')
+
+a = float(a)
+b = float(b)
+c = float(c)
+if c == 0:
+    x2 = 0
+    x1ch = -b
+    x1z = a
+    x1ch = x1ch // evkl(x1ch, x1z)
+    x1z = x1z // evkl(x1ch, x1z)
+    print(x1ch, x1z)
+    if x1z == 1:
+        x1 = x1ch
+        print('Ответ: ' + 'x1 =', x1, 'x2 =', x2)
+    else:
+        print('Ответ: ' + 'x1 =', str(x1ch)+'/'+str(x1z), 'x2 =', x2)
+else:
+    d = b**2 - 4*a*c
+    if d < 0:
+        print('Ответ: нет корней')
+    elif d >= 0:
+        x1 = (-b + d**0.5)/(2*a)
+        x2 = (-b - d ** 0.5) /(2*a)
+        print('Ответ: ' + 'x1 =', x1, 'x2 =', x2)
+    else:
+        x1 = x2 = (-b)/(2*a)
+        print('Ответ: ' + 'x1 =', x1, 'x2 =', x2)
