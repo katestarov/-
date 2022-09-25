@@ -1,0 +1,100 @@
+def number(znach):
+    if znach[0] == '-' and znach[1:].isdigit:
+        return 1
+    elif znach.isdigit():
+        return 1
+    for i in range(len(znach)):
+        if znach[i].isalpha():
+            return 0
+
+def evkl(a, b):
+    a = abs(a)
+    b = abs(b)
+    while a != b:
+        if a > b:
+            a -= b
+        elif a < b:
+            b -= a
+    return a
+
+print('''Введите коэффициенты квадратного уравнения ax^2 + bx + c = 0.
+Если ваше квадратное уравнение неполное, то присвойте значение c = 0 или b = 0''')
+print('Коэффициент а: ', end = '')
+a = input()
+while number(a) == 0 or a == '0':
+    if number(a) == 0:
+        print('Попробуйте еще раз. Коэффициент а: ', end = '')
+        a = input()
+    elif a == '0':
+        print('Ваше уравнение не квадратное. Попробуйте еще раз. Коэффициент а: ', end='')
+        a = input()
+print('Коэффициент b: ', end = '')
+b = input()
+while number(b) == 0:
+    if number(b) == 0:
+        print('Попробуйте еще раз. Коэффициент b: ', end = '')
+        b = input()
+print('Коэффициент c: ', end = '')
+c = input()
+while number(c) == 0:
+    if number(c) == 0:
+        print('Попробуйте еще раз. Коэффициент c: ', end = '')
+        c = input()
+if c != '0':
+    print('Ваше уравнение:', '('+str(a)+')'+'x^2'+'+'+'('+str(b)+')'+'x'+'+'+'('+str(c)+')'+' = 0')
+else:
+    print('Ваше уравнение:', '(' + str(a) + ')' + 'x^2' + '+' + '(' + str(b) + ')' + 'x' + ' = 0')
+
+a = float(a)
+b = float(b)
+c = float(c)
+
+if c == 0:
+    x2 = 0
+    x1ch = -b
+    x1z = a
+    x1ch1 = x1ch // evkl(x1ch, x1z)
+    x1z1 = x1z // evkl(x1ch, x1z)
+    if x1ch1 / x1z1 == int(x1ch1 / x1z1):
+        x1 = x1ch1 / x1z1
+        print('Ответ: ' + 'x1 =', int(x1), 'x2 =', x2)
+    else:
+        print('Ответ: ' + 'x1 =', str(int(x1ch1))+'/'+str(int(x1z1)), 'x2 =', x2)
+else:
+    d = b**2 - 4*a*c
+    if d < 0:
+        print('Ответ: нет корней')
+    else:
+        if int(d**0.5) == d**0.5:
+            x1ch = (-b + d ** 0.5)
+            x1z = 2*a
+            x1ch1 = x1ch // evkl(x1ch, x1z)
+            x1z1 = x1z // evkl(x1ch, x1z)
+            if x1ch1 / x1z1 == int(x1ch1 / x1z1):
+                x1 = x1ch1 / x1z1
+                print('Ответ: ' + 'x1 =', int(x1), 'x2 = ', end = '')
+            else:
+                print('Ответ: ' + 'x1 =', str(int(x1ch1)) + '/' + str(int(x1z1)), 'x2 = ', end = '')
+            x2ch = (-b - d ** 0.5)
+            x2z = 2 * a
+            x2ch1 = x2ch // evkl(x2ch, x2z)
+            x2z1 = x2z // evkl(x2ch, x2z)
+            if x2ch1 / x2z1 == int(x2ch1 / x2z1):
+                x2 = x2ch1 / x2z1
+                print(int(x2))
+            else:
+                print(str(int(x2ch1)) + '/' + str(int(x2z1)))
+        else:
+            d = int(d)
+            if b != int(b):
+                x1ch = '(' + str(-b) + '+' + '√' + str(d) + ')'
+                x1zn = 2*a
+                x2ch = '(' + str(-b) + '-' + '√' + str(d) + ')'
+                x2zn = 2*a
+                print('Ответ: ' + 'x1 =', x1ch + '/' + str(int(x1zn)), 'x2 =', x2ch + '/' + str(int(x2zn)))
+            else:
+                x1ch = '(' + str(int(-b)) + '+' + '√' + str(d) + ')'
+                x1zn = 2 * a
+                x2ch = '(' + str(int(-b)) + '-' + '√' + str(d) + ')'
+                x2zn = 2 * a
+                print('Ответ: ' + 'x1 =', x1ch + '/' + str(int(x1zn)), 'x2 =', x2ch + '/' + str(int(x2zn)))
