@@ -1,0 +1,96 @@
+print('''Привет! Эта программа называется "Текстовый калькулятор". 
+На вход подается строка, содержащая числовое выражение, записанное текстом, 
+а на выходе пользователь получает результат арифметических действий, который тоже будет записан в текстовом формате. 
+Пример: "пять плюс два умножить на три минус один" => "десять"
+
+Поддерживаемые операции с числами [0; 99]: cложение, вычитание, умножение
+Дополнительные фишки: учет приоритета операций, поддержка приоритета операций с помощью 
+скобок, возможность использования отрицательных чисел
+
+Запишите числовое выражение, записанное текстом: ''', end = '')
+
+
+
+def calc():
+    word={"ноль": 0, "один": 1, "два": 2, "три": 3, "четыре": 4, "пять": 5, "шесть": 6, "семь": 7, "восемь": 8, "девять": 9, "десять": 10,
+           "одиннадцать": 11, "двенадцать": 12, "тринадцать": 13, "четырнадцать": 14, "пятнадцать": 15, 'шестнадцать': 16, 'семнадцать': 17,
+           'восемнадцать': 18, "девятнадцать": 19, "двадцать": 20, "тридцать": 30, "сорок": 40,
+           "пятьдесят": 50, "шестьдесят": 60, "семьдесят": 70, "восемьдесят": 80, "девяносто": 90, "сто": 100, "двести": 200, "триста": 300,
+           "четыреста": 400, "пятьсот": 500, "шестьсот": 600, "семьсот": 700, "восемьсот": 800, "девятьсот": 900, "тысяча": 1000,
+           "две тысячи": 2000, "три тысячи": 3000, "четыре тысячи": 5000, "пять тысяч": 5000, "шесть тысяч": 6000,
+           "семь тысяч": 7000, "восемь тысяч": 8000, "девять тысяч": 9000}
+    sign0 = ["минус", "плюс", "умножить", "на", "скобка", "открывается", "закрывается"]
+    i = 0
+    lst = input().split(' ')
+    while i < len(lst):
+        if lst[i] not in word.keys() and lst[i] not in sign0 or \
+            i != 0 and lst[i-1] == lst[i] and lst[i] != 'минус' or \
+            i != 0 and lst[i-1] in word.keys() and lst[i] in word.keys() and 10 <= word[lst[i]] <= 10**8 or \
+            i != 0 and lst[i-1] == 'умножить' and lst[i] != 'на' or \
+            i != 0 and lst[i-1] == 'скобка' and lst[i] != 'открывается' and lst[i] != 'закрывается' or \
+            lst[-1] in sign0[:-2] or lst[0] in sign0[1:] and lst[0] != 'скобка' or \
+            lst.count('скобка') % 2 == 1 or lst.count('закрывается') != lst.count('открывается') or \
+            i != 0 and lst[i-1] == 'открывается' and lst[i] in sign0[1:]  or \
+            i != 0 and lst[i-1] == 'закрывается' and lst[i] not in sign0[:-3] or \
+            lst.count('минус') + lst.count('плюс') + lst.count('умножить') == 0:
+                print('Ошибка! Повторите ввод: ', end='')
+                lst = input().split(' ')
+                i = 0
+        else:
+            i += 1
+
+
+    newlst = []
+    string = ''
+    for i in range(len(lst)-1):
+        if lst[i] == 'скобка' and (lst[i+1] == 'открывается' or lst[i+1] == 'закрывается'):
+            if lst[i+1] == 'открывается':
+                newlst.append('cкобкаоткрывается')
+            else:
+                newlst.append('cкобказакрывается')
+        elif lst[i] == 'умножить' and lst[i+1] == 'на':
+            newlst.append('умножитьна')
+        elif lst[i] in ['закрывается', 'открывается', 'на']:
+            continue
+        else:
+            newlst.append(lst[i])
+    if lst[-1] not in ['закрывается', 'открывается', 'на']:
+        newlst.append(lst[-1])
+
+
+    sign = {"минус": "-", "плюс": "+", "умножитьна": "*", "cкобкаоткрывается": "(", "cкобказакрывается": ")"}
+    for i in range(len(newlst)-1):
+        if i == 0 and newlst[i] in word.keys() and newlst[i+1] not in word.keys():
+            string += str(word[newlst[i]])
+        elif i != 0 and newlst[i] in word.keys() and newlst[i+1] not in word.keys() and newlst[i-1] not in word.keys():
+            string += str(word[newlst[i]])
+        elif i != 0 and newlst[i] in word.keys() and newlst[i+1] not in word.keys() and newlst[i-1] in word.keys():
+            continue
+        elif newlst[i] in word.keys() and newlst[i+1] in word.keys():
+            string += str(word[newlst[i]] + word[newlst[i+1]])
+        elif newlst[i] in sign.keys():
+            string += str(sign[newlst[i]])
+    if newlst[-1] in word.keys() and newlst[-2] not in word.keys():
+        string += str(word[newlst[-1]])
+    elif newlst[-1] in sign.keys():
+        string += str(sign[newlst[-1]])
+
+
+    #print(newlst)
+    #print(string)
+    #print(eval(string))
+    res = eval(string)
+    dic_ext = dict(zip(word.values(), word.keys()))
+    result = [res // 1000 * 1000, res // 100 % 10 * 100]
+    if res % 100 >= 20:
+        result.append(res // 10 % 10 * 10)
+        result.append(res % 10)
+    else:
+        result.append(res % 100)
+        result.append(0)
+    for i in result:
+        if i != 0:
+            print(dic_ext[i], end = ' ')
+
+
+calc()
